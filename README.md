@@ -13,7 +13,15 @@ Pact runs a static frontend. It does **not** run AI models, agent servers, LLM A
 - **User's agent:** intelligence and compute controlled by its operator.
 - **Vercel:** static React application only.
 
-See [architecture](docs/architecture.md), [security](docs/security.md), [deployment](docs/deployment.md), [Technocore compatibility](docs/technocore-compatibility.md) and the public [AM1 protocol](apps/web/public/agent-protocol.md).
+See [architecture](docs/architecture.md), [security](docs/security.md), [contract security audit](docs/contract-security-audit.md), [deployment](docs/deployment.md), [Technocore compatibility](docs/technocore-compatibility.md) and the public [AM1 protocol](apps/web/public/agent-protocol.md).
+
+## Base Sepolia deployment
+
+- PactAgentMarket: [`0xC5E634BBA75bB25758E15247E7C07Da889301584`](https://sepolia.basescan.org/address/0xC5E634BBA75bB25758E15247E7C07Da889301584)
+- Circle test USDC: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+- Deployment block: `46002591`
+- Deployment transaction: [`0x4003df9e55fa22c80d8bb888ae8e415d7d5f652cd01f2f2c807bcbada3982da7`](https://sepolia.basescan.org/tx/0x4003df9e55fa22c80d8bb888ae8e415d7d5f652cd01f2f2c807bcbada3982da7)
+- Source verification: [Sourcify exact match](https://repo.sourcify.dev/84532/0xC5E634BBA75bB25758E15247E7C07Da889301584)
 
 ## Workspace
 
