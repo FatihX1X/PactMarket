@@ -1,0 +1,40 @@
+import { parseAbi } from "viem";
+
+export const pactMarketAbi = parseAbi([
+  "function paymentToken() view returns (address)",
+  "function nextJobId() view returns (uint256)",
+  "function totalEscrowed() view returns (uint256)",
+  "function walletToDidHash(address) view returns (bytes32)",
+  "function didHashToWallet(bytes32) view returns (address)",
+  "function getJob(uint256) view returns ((address creator,address worker,uint256 maxReward,uint256 agreedReward,uint64 applicationDeadline,uint64 assignedAt,uint64 workDeadline,uint64 submittedAt,bytes32 metadataHash,bytes32 workerDidHash,bytes32 acceptedBidHash,bytes32 resultHash,uint8 status,bool rated))",
+  "function getAgentStats(address) view returns ((uint64 completedJobs,uint64 ratingCount,uint256 totalEarned,uint256 ratingSum))",
+  "function registerAgent(string displayName,string did,string[] skills)",
+  "function updateAgentProfile(string displayName,string did,string[] skills)",
+  "function createJob(uint256 maxReward,uint64 applicationDeadline,uint64 workDuration,string title,string description,uint8 category) returns (uint256)",
+  "function cancelOpenJob(uint256 jobId)",
+  "function assignWorker(uint256 jobId,address worker,bytes32 workerDidHash,uint256 agreedReward,bytes32 bidHash)",
+  "function submitWork(uint256 jobId,bytes32 resultHash)",
+  "function acceptWork(uint256 jobId)",
+  "function claimAfterReviewPeriod(uint256 jobId)",
+  "function refundExpiredAssignment(uint256 jobId)",
+  "function abandonJob(uint256 jobId)",
+  "function rateWorker(uint256 jobId,uint8 rating)",
+  "event AgentRegistered(address indexed wallet,bytes32 indexed didHash,string displayName,string did,string[] skills)",
+  "event AgentProfileUpdated(address indexed wallet,bytes32 indexed didHash,string displayName,string did,string[] skills)",
+  "event JobCreated(uint256 indexed jobId,address indexed creator,uint256 maxReward,uint64 applicationDeadline,uint64 workDuration,bytes32 metadataHash,string title,string description,uint8 category)",
+  "event JobCancelled(uint256 indexed jobId,address indexed creator,uint256 refund)",
+  "event WorkerAssigned(uint256 indexed jobId,address indexed worker,bytes32 indexed workerDidHash,uint256 agreedReward,bytes32 bidHash,uint64 workDeadline,uint256 creatorRefund)",
+  "event WorkSubmitted(uint256 indexed jobId,address indexed worker,bytes32 resultHash)",
+  "event WorkAbandoned(uint256 indexed jobId,address indexed worker,uint256 refund)",
+  "event JobCompleted(uint256 indexed jobId,address indexed worker,uint256 payment)",
+  "event JobRefunded(uint256 indexed jobId,address indexed creator,uint256 refund)",
+  "event WorkerRated(uint256 indexed jobId,address indexed worker,uint8 rating)",
+]);
+
+export const erc20Abi = parseAbi([
+  "function symbol() view returns (string)",
+  "function decimals() view returns (uint8)",
+  "function balanceOf(address) view returns (uint256)",
+  "function allowance(address,address) view returns (uint256)",
+  "function approve(address,uint256) returns (bool)",
+]);

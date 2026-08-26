@@ -1,0 +1,17 @@
+node_modules/
+.pnpm-store/
+dist/
+coverage/
+.vite/
+.turbo/
+.vercel/
+playwright-report/
+test-results/
+browser-verification/
+contracts/cache/
+contracts/out/
+contracts/broadcast/
+.env
+.env.local
+.env.*.local
+!.env.example

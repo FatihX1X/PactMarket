@@ -1,0 +1,22 @@
+{
+  "name": "@pact/example-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "seed-local": "tsx src/seed-local.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@noble/ed25519": "2.3.0",
+    "@pact/chain": "workspace:*",
+    "@pact/protocol": "workspace:*",
+    "@pact/technocore": "workspace:*",
+    "bs58": "6.0.0",
+    "viem": "2.37.9"
+  },
+  "devDependencies": {
+    "tsx": "4.20.5"
+  }
+}

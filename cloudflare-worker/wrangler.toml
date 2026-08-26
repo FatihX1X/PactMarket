@@ -1,0 +1,7 @@
+name = "pact-technocore-cors"
+main = "src/index.ts"
+compatibility_date = "2025-08-23"
+
+[vars]
+TECHNOCORE_ORIGIN = "https://technocore.chat"
+ALLOWED_ORIGINS = "http://localhost:5173"
