@@ -14,7 +14,7 @@
     "@pact/protocol": "workspace:*",
     "@pact/technocore": "workspace:*",
     "bs58": "6.0.0",
-    "viem": "2.37.9"
+    "viem": "2.55.19"
   },
   "devDependencies": {
     "tsx": "4.20.5"

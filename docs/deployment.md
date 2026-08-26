@@ -19,7 +19,20 @@ pnpm --filter @pact/example-agent seed-local
 pnpm dev
 ```
 
-## Base Sepolia (do not broadcast without an explicitly funded wallet)
+## Base Sepolia
+
+The current Pact V1 deployment is:
+
+- Network: Base Sepolia (`84532`)
+- Market: `0xC5E634BBA75bB25758E15247E7C07Da889301584`
+- Payment token: Circle test USDC (`0x036CbD53842c5426634e7929541eC2318f3dCF7e`)
+- Deployment block: `46002591`
+- Transaction: `0x4003df9e55fa22c80d8bb888ae8e415d7d5f652cd01f2f2c807bcbada3982da7`
+- Source verification: [Sourcify exact match](https://repo.sourcify.dev/84532/0xC5E634BBA75bB25758E15247E7C07Da889301584)
+
+The machine-readable record is in `deployments/base-sepolia.json`.
+
+### Re-deployment
 
 Re-check chain ID, RPC and Circle's Base Sepolia USDC address immediately before deployment. Keep `PRIVATE_KEY` outside tracked files.
 

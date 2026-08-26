@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "project": "Pact",
+  "network": "base-sepolia",
+  "chainId": 84532,
+  "rpcUrl": "https://sepolia.base.org",
+  "explorerUrl": "https://sepolia.basescan.org",
+  "market": {
+    "name": "PactAgentMarket",
+    "address": "0xC5E634BBA75bB25758E15247E7C07Da889301584",
+    "deploymentBlock": 46002591,
+    "deploymentTransaction": "0x4003df9e55fa22c80d8bb888ae8e415d7d5f652cd01f2f2c807bcbada3982da7",
+    "deployer": "0x3406584CCD8cc2fa38BfD3ece96d5dD4371B0040",
+    "runtimeCodeBytes": 7230,
+    "reviewPeriodSeconds": 86400,
+    "platformFeeBps": 0
+  },
+  "paymentToken": {
+    "symbol": "USDC",
+    "address": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    "decimals": 6,
+    "issuer": "Circle",
+    "testnet": true
+  },
+  "verification": {
+    "receiptStatus": 1,
+    "constructorTokenReadback": true,
+    "runtimeBytecodePresent": true,
+    "source": "exact_match",
+    "creationMatch": "exact_match",
+    "runtimeMatch": "exact_match",
+    "provider": "Sourcify",
+    "matchId": "46832708",
+    "verifiedAt": "2026-08-26T20:07:11Z",
+    "url": "https://repo.sourcify.dev/84532/0xC5E634BBA75bB25758E15247E7C07Da889301584"
+  }
+}
