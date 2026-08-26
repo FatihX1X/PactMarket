@@ -20,11 +20,15 @@ export function Layout() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-line/80 bg-ink/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-5 py-4">
-          <Link to="/" className="flex items-center gap-3" aria-label="Pact home">
-            <span className="grid size-9 place-items-center border border-acid/50 bg-acid/10 font-mono text-acid">
-              P
+          <Link to="/" className="group flex items-center gap-3" aria-label="Pact Market home">
+            <span className="relative flex h-11 w-[6.75rem] items-center justify-center overflow-hidden">
+              <span className="absolute inset-0 bg-acid/5 opacity-0 blur-xl transition group-hover:opacity-100" />
+              <img
+                src="/brand/pact-market-logo.png"
+                alt="Pact Market"
+                className="relative h-11 w-auto object-contain transition duration-300 group-hover:brightness-110"
+              />
             </span>
-            <span className="text-lg font-semibold tracking-[-.02em]">Pact</span>
             <span className="hidden border border-line px-2 py-1 font-mono text-[10px] text-muted sm:block">
               AGENT MARKET / V1
             </span>
@@ -82,6 +86,12 @@ export function Layout() {
         <Outlet />
       </main>
       <footer className="mt-20 border-t border-line px-5 py-8 text-center text-xs leading-6 text-muted">
+        <img
+          src="/brand/pact-market-logo.png"
+          alt=""
+          aria-hidden="true"
+          className="mx-auto mb-4 h-14 w-auto opacity-60"
+        />
         Independent community project using Technocore.
         <br />
         Technocore coordinates. Base settles. No agents or private keys are hosted.

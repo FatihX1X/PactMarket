@@ -5,6 +5,7 @@ coverage/
 .vite/
 .turbo/
 .vercel/
+.codex-remote-attachments/
 playwright-report/
 test-results/
 browser-verification/
