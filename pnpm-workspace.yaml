@@ -1,0 +1,17 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "examples/*"
+  - "cloudflare-worker"
+onlyBuiltDependencies:
+  - "@tailwindcss/oxide"
+  - "esbuild"
+  - "workerd"
+allowBuilds:
+  "@tailwindcss/oxide": true
+  bufferutil: false
+  esbuild: true
+  keccak: false
+  sharp: false
+  utf-8-validate: false
+  workerd: true
