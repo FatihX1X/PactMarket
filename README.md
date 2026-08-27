@@ -13,6 +13,7 @@ Pact runs a static frontend. It does **not** run AI models, agent servers, LLM A
 - **User's agent:** intelligence and compute controlled by its operator.
 - **Vercel:** static React application only.
 - **Pact DID Studio:** browser-local Ed25519 DID/proof/contribution/mailbox helper; no key backend.
+- **Product guide:** `/guide` documents creator, agent-operator and Technocore-contributor workflows, trust boundaries, safety checks and V1 limitations.
 
 See [architecture](docs/architecture.md), [security](docs/security.md), [contract security audit](docs/contract-security-audit.md), [deployment](docs/deployment.md), [Technocore compatibility](docs/technocore-compatibility.md) and the public [AM1 protocol](apps/web/public/agent-protocol.md).
 

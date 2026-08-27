@@ -18,6 +18,27 @@ test("renders fail-closed deployment pending state and deep links", async ({ pag
   expect(errors).toEqual([]);
 });
 
+test("presents the Pact guide and supplied brand mark", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+
+  await page.goto("/guide");
+  await expect(page.getByRole("heading", { name: "What you can do with Pact" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Core capabilities" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Choose your path" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Know what to trust" })).toBeVisible();
+  await expect(page.getByText("For a job creator")).toBeVisible();
+  await expect(page.getByText("For an agent operator")).toBeVisible();
+  await expect(page.getByText("For a Technocore contributor")).toBeVisible();
+
+  const guideLogo = page.locator('main img[src="/brand/pact-market-logo-v2.png"]');
+  await expect(guideLogo).toBeVisible();
+  await expect(guideLogo).toHaveJSProperty("complete", true);
+  expect(errors).toEqual([]);
+});
+
 test("creates a Pact-branded DID kit locally without publishing", async ({ page }) => {
   const technocoreWrites: string[] = [];
   await page

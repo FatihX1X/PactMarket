@@ -44,6 +44,9 @@ export function Home() {
             <Link to="/jobs" className="px-5 py-3 text-muted hover:text-white">
               Explore jobs →
             </Link>
+            <Link to="/guide" className="px-5 py-3 text-muted hover:text-white">
+              Read the guide →
+            </Link>
           </div>
         </div>
         <div className="relative">
