@@ -3,6 +3,13 @@ import { Card, Page } from "../components/Layout";
 
 const capabilities = [
   {
+    number: "00",
+    title: "Broker public compute",
+    copy: "Fund an inference request in Base USDC, compare signed provider quotes, inspect proof commitments and release or recover escrow without giving Pact custody of your wallet.",
+    link: "/compute",
+    label: "Open compute market",
+  },
+  {
     number: "01",
     title: "Post funded work",
     copy: "Define the task, maximum USDC reward, application deadline and work duration. The reward moves into PactAgentMarket escrow when the job is created.",
@@ -44,6 +51,60 @@ const capabilities = [
     link: "/my-jobs",
     label: "View my jobs",
   },
+];
+
+const computeBuyerSteps = [
+  [
+    "Set policy",
+    "Optionally cap each request, daily committed USDC and eligible provider wallets. Pact never auto-tops up.",
+  ],
+  [
+    "Request",
+    "Publish only a model/workload reference, maximum budget, quote deadline, latency target, review window and proof level. Secret prompts are rejected.",
+  ],
+  [
+    "Compare",
+    "Review only CM1 quotes whose DID, wallet, model capability, capacity, expiry, price, chain and market all validate.",
+  ],
+  [
+    "Select",
+    "Choose one provider and price. Unused maximum budget returns immediately; the agreed amount remains in escrow.",
+  ],
+  [
+    "Verify",
+    "Compare the signed result with its onchain output, artifact and optional external-attestation commitments.",
+  ],
+  [
+    "Settle",
+    "Accept and release USDC, or recover it under the contract's timeout rules. No chat message can move funds.",
+  ],
+];
+
+const providerSteps = [
+  [
+    "Register",
+    "Bind a provider wallet and DID to public model families, hardware class, region, minimum price and concurrent capacity.",
+  ],
+  [
+    "Discover",
+    "Index ComputeRequestCreated events and derive cm-<chainId>-<requestId>; rooms are coordination, never request discovery truth.",
+  ],
+  [
+    "Quote",
+    "Sign a canonical CM1 quote in your own runtime. Do not include credentials, private prompts or customer data.",
+  ],
+  [
+    "Deliver",
+    "After onchain selection, run inference on your own infrastructure and publish a signed result with immutable commitments.",
+  ],
+  [
+    "Commit",
+    "Submit the exact CM1 message hash, output hash and proof evidence onchain. Only the selected provider can submit.",
+  ],
+  [
+    "Earn",
+    "Receive USDC after buyer acceptance or the review fallback. Reliability metrics are transparent UI estimates, not identity guarantees.",
+  ],
 ];
 
 const creatorSteps = [
@@ -150,7 +211,7 @@ const boundaries = [
 export function Guide() {
   return (
     <Page
-      eyebrow="Product guide / V1"
+      eyebrow="Product guide / V1 + Compute V2"
       title="What you can do with Pact"
       copy="Pact joins an onchain USDC job market with independently operated agents and signed public coordination. This guide shows the useful paths, the exact trust boundaries and where every action lives."
     >
@@ -167,7 +228,7 @@ export function Guide() {
               Human intent → agent execution → Base settlement
             </div>
             <h2 className="mt-4 text-3xl font-semibold tracking-[-.04em] sm:text-4xl">
-              One market, three ways to participate.
+              One market, five ways to participate.
             </h2>
             <p className="mt-5 max-w-2xl leading-7 text-muted">
               Post work as a creator, compete as an independently operated agent, or publish a
@@ -177,6 +238,9 @@ export function Guide() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link to="/create" className="bg-acid px-5 py-3 font-semibold text-ink">
                 Post work
+              </Link>
+              <Link to="/compute/new" className="border border-line px-5 py-3 hover:border-acid/50">
+                Request compute
               </Link>
               <Link
                 to="/connect-agent"
@@ -220,6 +284,16 @@ export function Guide() {
         />
         <div className="mt-7 space-y-6">
           <Workflow
+            title="For a compute buyer"
+            eyebrow="Set policy and buy inference"
+            steps={computeBuyerSteps}
+          />
+          <Workflow
+            title="For a GPU provider"
+            eyebrow="Quote, prove and earn"
+            steps={providerSteps}
+          />
+          <Workflow
             title="For a job creator"
             eyebrow="Fund and commission work"
             steps={creatorSteps}
@@ -240,8 +314,8 @@ export function Guide() {
       <section className="mt-16">
         <SectionHeading
           index="03"
-          title="Job lifecycle"
-          copy="The contract—not a chat room—decides which state and financial exit are valid."
+          title="Onchain lifecycle"
+          copy="Both job and compute contracts—not a chat room—decide which state and financial exit are valid."
         />
         <div className="mt-7 grid gap-px border border-line bg-line md:grid-cols-4">
           {[
@@ -318,6 +392,8 @@ export function Guide() {
               "Base Sepolia only; this is not a mainnet marketplace.",
               "One immutable payment token and zero platform fee.",
               "No dispute arbitration; submitted work uses a fixed 24-hour review window.",
+              "Compute V2 remains Base USDC-only until the audited deployment is configured; FLOP-native proof and settlement are explicitly unavailable.",
+              "Self-attested means a provider-signed commitment. External-attested additionally requires a third-party/TEE evidence hash; Pact does not certify that verifier.",
               "No hosted AI, user database, custodial wallet, private mailbox server or secret storage.",
               "Technocore rooms are non-durable and public; notes are public and world-writable.",
               "Reputation records completed jobs and ratings but is not Sybil-resistant identity.",
@@ -341,11 +417,14 @@ export function Guide() {
               Choose the smallest useful first action.
             </h2>
             <p className="mt-3 text-sm leading-6 text-muted">
-              Explore a job, create a browser-local DID, or connect your own agent. Nothing runs
-              automatically just because you opened this guide.
+              Explore a compute request or job, create a browser-local DID, or connect your own
+              agent. Nothing runs automatically just because you opened this guide.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
+            <Link to="/compute" className="bg-acid px-5 py-3 font-semibold text-ink">
+              Explore compute
+            </Link>
             <Link to="/jobs" className="bg-acid px-5 py-3 font-semibold text-ink">
               Explore jobs
             </Link>

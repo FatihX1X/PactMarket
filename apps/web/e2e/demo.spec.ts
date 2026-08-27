@@ -17,8 +17,15 @@ import {
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { foundry } from "viem/chains";
-import { pactMarketAbi } from "@pact/chain";
-import { messageHash, serializeBid, serializeResult } from "@pact/protocol";
+import { pactComputeMarketAbi, pactMarketAbi } from "@pact/chain";
+import {
+  computeMessageHash,
+  serializeBid,
+  serializeComputeQuote,
+  serializeComputeResult,
+  serializeResult,
+  messageHash,
+} from "@pact/protocol";
 
 type Artifact = { abi: Abi; bytecode: { object: Hex } };
 type RoomMessage = { seq: number; ts: string; from: string; nonce: number; text: string };
@@ -26,6 +33,7 @@ type RoomMessage = { seq: number; ts: string; from: string; nonce: number; text:
 const rpcUrl = "http://127.0.0.1:8545";
 const expectedUsdc = "0xf2e246bb76df876cef8b38ae84130f4f55de395b" as const;
 const expectedMarket = "0x2946259e0334f33a064106302415ad3391bed384" as const;
+const expectedCompute = "0xde09e74d4888bc4e65f589e8c13bce9f71ddf4c7" as const;
 const accountFor = (value: bigint) =>
   privateKeyToAccount(`0x${value.toString(16).padStart(64, "0")}` as Hex);
 const alice = accountFor(1n);
@@ -56,9 +64,10 @@ test.afterAll(() => anvil?.kill());
 
 test("runs the Alice and Agent A/B escrow demo end to end", async ({ page }) => {
   test.setTimeout(90_000);
-  const { usdc, market } = await deployDemo();
+  const { usdc, market, computeMarket } = await deployDemo();
   expect(usdc.toLowerCase()).toBe(expectedUsdc);
   expect(market.toLowerCase()).toBe(expectedMarket);
+  expect(computeMarket.toLowerCase()).toBe(expectedCompute);
 
   const bidA = serializeBid({
     type: "bid",
@@ -116,7 +125,7 @@ test("runs the Alice and Agent A/B escrow demo end to end", async ({ page }) => 
       functionName: "balanceOf",
       args: [alice.address],
     }),
-  ).toBe(parseUnits("17", 6));
+  ).toBe(parseUnits("21", 6));
 
   const resultText = serializeResult({
     type: "result",
@@ -169,9 +178,78 @@ test("runs the Alice and Agent A/B escrow demo end to end", async ({ page }) => 
   expect(stats.completedJobs).toBe(1n);
   expect(stats.totalEarned).toBe(parseUnits("3", 6));
   expect(stats.ratingSum).toBe(5n);
+
+  const quote = serializeComputeQuote({
+    type: "compute_quote",
+    chainId: 31337,
+    market: computeMarket,
+    requestId: "1",
+    wallet: agentA.address,
+    price: "4000000",
+    model: "llama-3",
+    latencyMs: 900,
+    capacity: 2,
+    expiresAt: Math.floor(Date.now() / 1_000) + 3_600,
+    proposal: "Public Llama inference on an A100 provider.",
+  });
+  const computeMessages: RoomMessage[] = [
+    { seq: 1, ts: new Date().toISOString(), from: didA, nonce: 1, text: quote },
+  ];
+  await page.route("**/r/cm-31337-1**", async (route) => {
+    await route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        room: "cm-31337-1",
+        count: computeMessages.length,
+        first_seq: 1,
+        last_seq: computeMessages.at(-1)?.seq ?? 0,
+        messages: computeMessages,
+      }),
+    });
+  });
+  await page.goto("/compute/1");
+  await expect(page.getByRole("heading", { name: "llama-3" })).toBeVisible();
+  await page.getByRole("button", { name: "Quotes" }).click();
+  await expect(page.getByText("LOWEST PRICE")).toBeVisible();
+  await page.getByRole("button", { name: "Select provider" }).click();
+
+  const outputHash = `0x${"42".repeat(32)}` as Hex;
+  const computeResult = serializeComputeResult({
+    type: "compute_result",
+    chainId: 31337,
+    market: computeMarket,
+    requestId: "1",
+    result: "Public inference completed.",
+    artifactUri: "ipfs://public-result",
+    artifactHash: `0x${"24".repeat(32)}`,
+    outputHash,
+    attestationHash: `0x${"00".repeat(32)}`,
+    proofLevel: "self-attested",
+    submittedAt: Math.floor(Date.now() / 1_000),
+  });
+  computeMessages.push({
+    seq: 2,
+    ts: new Date().toISOString(),
+    from: didA,
+    nonce: 2,
+    text: computeResult,
+  });
+  await writeAndWait(agentWallet, publicClient, {
+    address: computeMarket,
+    abi: pactComputeMarketAbi,
+    functionName: "submitComputeResult",
+    args: [1n, computeMessageHash(computeResult), outputHash, `0x${"00".repeat(32)}`],
+  });
+  await page.reload();
+  await page.getByRole("button", { name: "Result" }).click();
+  await expect(page.getByText("MATCHES ONCHAIN COMMITMENTS")).toBeVisible();
+  await page.screenshot({ path: "test-results/pact-compute-demo.png", fullPage: true });
+  await page.getByRole("button", { name: "Overview" }).click();
+  await page.getByRole("button", { name: "Accept & release USDC" }).click();
+  await expect.poll(async () => (await readCompute(publicClient, computeMarket)).status).toBe(3);
 });
 
-async function deployDemo(): Promise<{ usdc: Address; market: Address }> {
+async function deployDemo(): Promise<{ usdc: Address; market: Address; computeMarket: Address }> {
   const testClient = createTestClient({
     chain: foundry,
     mode: "anvil",
@@ -185,6 +263,7 @@ async function deployDemo(): Promise<{ usdc: Address; market: Address }> {
   const deployer = createWalletClient({ account: alice, chain: foundry, transport: http(rpcUrl) });
   const usdcArtifact = await artifact("MockUSDC");
   const marketArtifact = await artifact("PactAgentMarket");
+  const computeArtifact = await artifact("PactComputeMarket");
   const usdcHash = await deployer.deployContract({
     abi: usdcArtifact.abi,
     bytecode: usdcArtifact.bytecode.object,
@@ -197,11 +276,18 @@ async function deployDemo(): Promise<{ usdc: Address; market: Address }> {
   });
   const market = (await publicClient.waitForTransactionReceipt({ hash: marketHash }))
     .contractAddress!;
+  const computeHash = await deployer.deployContract({
+    abi: computeArtifact.abi,
+    bytecode: computeArtifact.bytecode.object,
+    args: [usdc],
+  });
+  const computeMarket = (await publicClient.waitForTransactionReceipt({ hash: computeHash }))
+    .contractAddress!;
   await writeAndWait(deployer, publicClient, {
     address: usdc,
     abi: usdcArtifact.abi,
     functionName: "mint",
-    args: [alice.address, parseUnits("20", 6)],
+    args: [alice.address, parseUnits("30", 6)],
   });
   for (const [account, did, name] of [
     [agentA, didA, "Agent A"],
@@ -213,6 +299,12 @@ async function deployDemo(): Promise<{ usdc: Address; market: Address }> {
       abi: marketArtifact.abi,
       functionName: "registerAgent",
       args: [name, did, ["research"]],
+    });
+    await writeAndWait(wallet, publicClient, {
+      address: computeMarket,
+      abi: computeArtifact.abi,
+      functionName: "registerProvider",
+      args: [name, did, ["llama-3"], "A100 80GB", "eu-west", parseUnits("2", 6), 2],
     });
   }
   await writeAndWait(deployer, publicClient, {
@@ -234,7 +326,32 @@ async function deployDemo(): Promise<{ usdc: Address; market: Address }> {
       0,
     ],
   });
-  return { usdc, market };
+  await writeAndWait(deployer, publicClient, {
+    address: usdc,
+    abi: usdcArtifact.abi,
+    functionName: "approve",
+    args: [computeMarket, parseUnits("6", 6)],
+  });
+  await writeAndWait(deployer, publicClient, {
+    address: computeMarket,
+    abi: computeArtifact.abi,
+    functionName: "createComputeRequest",
+    args: [
+      parseUnits("6", 6),
+      BigInt(Math.floor(Date.now() / 1_000) + 86_400),
+      7_200n,
+      3_600n,
+      1_500,
+      `0x${"11".repeat(32)}`,
+      `0x${"00".repeat(32)}`,
+      0,
+      "llama-3",
+      "Summarize a public benchmark dataset.",
+      "eu-west",
+      false,
+    ],
+  });
+  return { usdc, market, computeMarket };
 }
 
 async function artifact(contractName: string): Promise<Artifact> {
@@ -258,6 +375,15 @@ async function readJob(client: ReturnType<typeof createPublicClient>, market: Ad
     address: market,
     abi: pactMarketAbi,
     functionName: "getJob",
+    args: [1n],
+  });
+}
+
+async function readCompute(client: ReturnType<typeof createPublicClient>, market: Address) {
+  return client.readContract({
+    address: market,
+    abi: pactComputeMarketAbi,
+    functionName: "getRequest",
     args: [1n],
   });
 }

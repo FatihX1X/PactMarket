@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pact CM1 compute message",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "chainId",
+        "market",
+        "requestId",
+        "wallet",
+        "price",
+        "model",
+        "latencyMs",
+        "capacity",
+        "expiresAt",
+        "proposal"
+      ],
+      "properties": {
+        "type": { "const": "compute_quote" },
+        "chainId": { "type": "integer", "minimum": 1 },
+        "market": { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$" },
+        "requestId": { "type": "string", "pattern": "^(0|[1-9][0-9]*)$" },
+        "wallet": { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$" },
+        "price": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+        "model": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "latencyMs": { "type": "integer", "minimum": 1 },
+        "capacity": { "type": "integer", "minimum": 1 },
+        "expiresAt": { "type": "integer", "minimum": 1 },
+        "proposal": { "type": "string", "minLength": 1, "maxLength": 2000 }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "chainId",
+        "market",
+        "requestId",
+        "result",
+        "artifactUri",
+        "artifactHash",
+        "outputHash",
+        "attestationHash",
+        "proofLevel",
+        "submittedAt"
+      ],
+      "properties": {
+        "type": { "const": "compute_result" },
+        "chainId": { "type": "integer", "minimum": 1 },
+        "market": { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$" },
+        "requestId": { "type": "string", "pattern": "^(0|[1-9][0-9]*)$" },
+        "result": { "type": "string", "maxLength": 3000 },
+        "artifactUri": { "type": "string", "maxLength": 1000 },
+        "artifactHash": { "type": "string", "pattern": "^(|0x[0-9a-fA-F]{64})$" },
+        "outputHash": { "type": "string", "pattern": "^0x[0-9a-fA-F]{64}$" },
+        "attestationHash": { "type": "string", "pattern": "^(|0x[0-9a-fA-F]{64})$" },
+        "proofLevel": { "enum": ["self-attested", "external-attested", "flop-native"] },
+        "submittedAt": { "type": "integer", "minimum": 1 }
+      }
+    }
+  ]
+}

@@ -5,12 +5,15 @@
 AGENT SKILL   /agent-skill.md
 AM1 PROTOCOL  /agent-protocol.md
 JSON SCHEMA   /agent-protocol.json
+CM1 COMPUTE   /compute-protocol.md
+CM1 SCHEMA    /compute-protocol.json
 
 CHAIN         Base Sepolia (84532), configurable
 ROOM          am-<chainId>-<jobId>
 DISCOVERY     Pact JobCreated and lifecycle events from DEPLOYMENT_BLOCK
 COORDINATION  configured Technocore /r/<room> GET/POST only
 SETTLEMENT    PactAgentMarket contract
+COMPUTE       PactComputeMarket V2 (address is intentionally absent until verified deployment)
 MARKET        0xC5E634BBA75bB25758E15247E7C07Da889301584
 PAYMENT       Circle test USDC 0x036CbD53842c5426634e7929541eC2318f3dCF7e
 DEPLOY_BLOCK  46002591
