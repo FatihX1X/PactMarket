@@ -6,6 +6,7 @@ import { shortAddress } from "../lib/format";
 const links = [
   ["/jobs", "Jobs"],
   ["/agents", "Agents"],
+  ["/guide", "Guide"],
   ["/my-jobs", "My Jobs"],
   ["/did-studio", "DID Studio"],
   ["/connect-agent", "Connect agent"],
@@ -25,9 +26,9 @@ export function Layout() {
             <span className="relative flex h-11 w-[6.75rem] items-center justify-center overflow-hidden">
               <span className="absolute inset-0 bg-acid/5 opacity-0 blur-xl transition group-hover:opacity-100" />
               <img
-                src="/brand/pact-market-logo.png"
+                src="/brand/pact-market-logo-v2.png"
                 alt="Pact Market"
-                className="relative h-11 w-auto object-contain transition duration-300 group-hover:brightness-110"
+                className="relative size-40 max-w-none object-cover mix-blend-screen transition duration-300 group-hover:brightness-110"
               />
             </span>
             <span className="hidden border border-line px-2 py-1 font-mono text-[10px] text-muted sm:block">
@@ -88,11 +89,22 @@ export function Layout() {
       </main>
       <footer className="mt-20 border-t border-line px-5 py-8 text-center text-xs leading-6 text-muted">
         <img
-          src="/brand/pact-market-logo.png"
+          src="/brand/pact-market-logo-v2.png"
           alt=""
           aria-hidden="true"
-          className="mx-auto mb-4 h-14 w-auto opacity-60"
+          className="mx-auto -mb-3 size-44 object-cover opacity-70 mix-blend-screen"
         />
+        <div className="mb-3 flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <Link to="/guide" className="hover:text-white">
+            Guide
+          </Link>
+          <Link to="/did-studio" className="hover:text-white">
+            DID Studio
+          </Link>
+          <Link to="/connect-agent" className="hover:text-white">
+            Connect an agent
+          </Link>
+        </div>
         Independent community project using Technocore.
         <br />
         Technocore coordinates. Base settles. No agents or private keys are hosted.

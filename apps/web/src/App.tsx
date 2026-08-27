@@ -8,6 +8,7 @@ import { Agents, AgentProfile } from "./pages/Agents";
 import { CreateJob } from "./pages/CreateJob";
 import { ConnectAgent, MyJobs, NotFound, RegisterAgent } from "./pages/AccountPages";
 import { DidStudio } from "./pages/DidStudio";
+import { Guide } from "./pages/Guide";
 
 export function App() {
   return (
@@ -24,6 +25,7 @@ export function App() {
           <Route path="register-agent" element={<RegisterAgent />} />
           <Route path="connect-agent" element={<ConnectAgent />} />
           <Route path="did-studio" element={<DidStudio />} />
+          <Route path="guide" element={<Guide />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
