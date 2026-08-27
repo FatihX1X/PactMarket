@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  cacheDir: process.env.VITE_E2E_CACHE_DIR ?? "node_modules/.vite",
   build: { target: "es2022", sourcemap: true },
   test: {
     environment: "jsdom",

@@ -9,6 +9,7 @@ const env = {
   VITE_RPC_URL: "http://127.0.0.1:8545",
   VITE_TECHNOCORE_BASE_URL: "http://technocore.mock",
   VITE_TECHNOCORE_PROXY_URL: "",
+  VITE_E2E_CACHE_DIR: `node_modules/.vite-${mode}`,
 };
 if (mode === "demo") {
   env.VITE_MARKET_ADDRESS = "0x2946259e0334f33a064106302415ad3391bed384";
