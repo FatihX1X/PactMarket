@@ -17,12 +17,24 @@ export const appConfig = {
   deploymentBlock: /^\d+$/.test(import.meta.env.VITE_DEPLOYMENT_BLOCK ?? "")
     ? BigInt(import.meta.env.VITE_DEPLOYMENT_BLOCK)
     : null,
+  computeMarketAddress: isAddress(import.meta.env.VITE_COMPUTE_MARKET_ADDRESS ?? "")
+    ? getAddress(import.meta.env.VITE_COMPUTE_MARKET_ADDRESS)
+    : null,
+  computeDeploymentBlock: /^\d+$/.test(import.meta.env.VITE_COMPUTE_DEPLOYMENT_BLOCK ?? "")
+    ? BigInt(import.meta.env.VITE_COMPUTE_DEPLOYMENT_BLOCK)
+    : null,
   technocoreUrl: import.meta.env.VITE_TECHNOCORE_BASE_URL?.trim() || "https://technocore.chat",
   technocoreProxyUrl: import.meta.env.VITE_TECHNOCORE_PROXY_URL?.trim() || "",
 };
 
 export const marketConfigured = Boolean(
   appConfig.marketAddress && appConfig.usdcAddress && appConfig.deploymentBlock !== null,
+);
+
+export const computeMarketConfigured = Boolean(
+  appConfig.computeMarketAddress &&
+    appConfig.usdcAddress &&
+    appConfig.computeDeploymentBlock !== null,
 );
 
 export const pactChain = defineChain({

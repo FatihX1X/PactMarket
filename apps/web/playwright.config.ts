@@ -8,30 +8,30 @@ export default defineConfig({
   webServer: [
     {
       command: "node e2e/start-vite.mjs demo",
-      url: "http://127.0.0.1:4173",
-      reuseExistingServer: true,
+      url: "http://127.0.0.1:4273",
+      reuseExistingServer: false,
     },
     {
       command: "node e2e/start-vite.mjs pending",
-      url: "http://127.0.0.1:4174",
-      reuseExistingServer: true,
+      url: "http://127.0.0.1:4274",
+      reuseExistingServer: false,
     },
   ],
   projects: [
     {
       name: "demo",
       testMatch: "demo.spec.ts",
-      use: { ...devices["Desktop Chrome"], baseURL: "http://127.0.0.1:4173" },
+      use: { ...devices["Desktop Chrome"], baseURL: "http://127.0.0.1:4273" },
     },
     {
       name: "desktop-pending",
       testMatch: "pending.spec.ts",
-      use: { ...devices["Desktop Chrome"], baseURL: "http://127.0.0.1:4174" },
+      use: { ...devices["Desktop Chrome"], baseURL: "http://127.0.0.1:4274" },
     },
     {
       name: "mobile-pending",
       testMatch: "pending.spec.ts",
-      use: { ...devices["Pixel 7"], baseURL: "http://127.0.0.1:4174" },
+      use: { ...devices["Pixel 7"], baseURL: "http://127.0.0.1:4274" },
     },
   ],
 });

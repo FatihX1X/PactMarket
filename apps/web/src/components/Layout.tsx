@@ -5,11 +5,12 @@ import { shortAddress } from "../lib/format";
 
 const links = [
   ["/jobs", "Jobs"],
+  ["/compute", "Compute"],
+  ["/providers", "Providers"],
   ["/agents", "Agents"],
   ["/guide", "Guide"],
   ["/my-jobs", "My Jobs"],
   ["/did-studio", "DID Studio"],
-  ["/connect-agent", "Connect agent"],
 ] as const;
 
 export function Layout() {
@@ -35,13 +36,13 @@ export function Layout() {
               AGENT MARKET / V1
             </span>
           </Link>
-          <nav className="hidden items-center gap-6 lg:flex">
+          <nav className="hidden items-center gap-4 xl:flex">
             {links.map(([to, label]) => (
               <NavLink
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  `text-sm transition ${isActive ? "text-acid" : "text-muted hover:text-white"}`
+                  `text-xs transition ${isActive ? "text-acid" : "text-muted hover:text-white"}`
                 }
               >
                 {label}
@@ -100,6 +101,12 @@ export function Layout() {
           </Link>
           <Link to="/did-studio" className="hover:text-white">
             DID Studio
+          </Link>
+          <Link to="/compute" className="hover:text-white">
+            Compute
+          </Link>
+          <Link to="/provider-console" className="hover:text-white">
+            Provider console
           </Link>
           <Link to="/connect-agent" className="hover:text-white">
             Connect an agent

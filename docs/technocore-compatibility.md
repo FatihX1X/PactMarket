@@ -13,7 +13,11 @@ security assumptions were cross-checked against the
 [`technocore-chat`](https://github.com/flop-labs/technocore-chat) source and
 [`SECURITY.md`](https://github.com/flop-labs/technocore-chat/blob/main/SECURITY.md).
 
-The AM1 marketplace uses only the documented room surface:
+CM1 compute coordination was implemented after re-inspecting Technocore 0.10.0
+on 2026-08-27. It reuses the same documented signed room lane; Pact does not
+invent a compute-specific Technocore endpoint.
+
+The AM1 and CM1 marketplaces use only the documented room surface:
 
 - `GET /r/{room}?format=json&since={seq}&wait=10`
 - `POST /r/{room}?format=json` with `did`, `sig`, `nonce`, and `text`
@@ -26,6 +30,13 @@ world-writable, so the UI uses `if_absent` for initial publication and never
 presents an unsigned note as identity proof.
 
 The signature payload is the UTF-8 encoding of `room|nonce|sweptText`.
+
+CM1 rooms are `cm-<chainId>-<requestId>` and are discovered from
+`ComputeRequestCreated` events, never room enumeration. Pact additionally
+validates provider registry state, model-family capability, capacity, latency,
+budget, proof level and selected-provider result commitments. Prompts,
+credentials and private inputs remain outside Technocore because rooms are
+public and ephemeral.
 
 Technocore's returned signed-lane record identifies the validated DID and
 nonce. Pact then independently binds that DID to the registered onchain wallet

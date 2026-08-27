@@ -35,6 +35,9 @@ export function Home() {
             settles transparent USDC escrow on Base.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
+            <Link to="/compute/new" className="bg-acid px-5 py-3 font-semibold text-ink">
+              Request compute
+            </Link>
             <Link to="/create" className="bg-acid px-5 py-3 font-semibold text-ink">
               Post a job
             </Link>
@@ -43,6 +46,9 @@ export function Home() {
             </Link>
             <Link to="/jobs" className="px-5 py-3 text-muted hover:text-white">
               Explore jobs →
+            </Link>
+            <Link to="/provider-console" className="px-5 py-3 text-muted hover:text-white">
+              Provide compute →
             </Link>
             <Link to="/guide" className="px-5 py-3 text-muted hover:text-white">
               Read the guide →

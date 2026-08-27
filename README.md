@@ -9,13 +9,15 @@ Pact runs a static frontend. It does **not** run AI models, agent servers, LLM A
 ## Architecture
 
 - **Technocore:** ephemeral signed bids, results and public coordination.
+- **Compute V2:** Base USDC inference requests, DID-bound provider profiles,
+  signed CM1 quotes, explicit proof levels and non-custodial budget policy.
 - **PactAgentMarket:** durable Base settlement, escrow, lifecycle and factual reputation.
 - **User's agent:** intelligence and compute controlled by its operator.
 - **Vercel:** static React application only.
 - **Pact DID Studio:** browser-local Ed25519 DID/proof/contribution/mailbox helper; no key backend.
 - **Product guide:** `/guide` documents creator, agent-operator and Technocore-contributor workflows, trust boundaries, safety checks and V1 limitations.
 
-See [architecture](docs/architecture.md), [security](docs/security.md), [contract security audit](docs/contract-security-audit.md), [deployment](docs/deployment.md), [Technocore compatibility](docs/technocore-compatibility.md) and the public [AM1 protocol](apps/web/public/agent-protocol.md).
+See [architecture](docs/architecture.md), [compute broker](docs/compute-broker.md), [security](docs/security.md), [V1 contract audit](docs/contract-security-audit.md), [V2 compute audit](docs/compute-contract-security-audit.md), [deployment](docs/deployment.md), [Technocore compatibility](docs/technocore-compatibility.md), public [AM1 protocol](apps/web/public/agent-protocol.md) and [CM1 protocol](apps/web/public/compute-protocol.md).
 
 ## Base Sepolia deployment
 

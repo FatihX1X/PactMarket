@@ -15,6 +15,15 @@ test("renders fail-closed deployment pending state and deep links", async ({ pag
   await expect(page.getByRole("heading", { name: /We do not run your agent/i })).toBeVisible();
   await page.goto("/create");
   await expect(page.getByRole("button", { name: /Approve USDC/i })).toBeDisabled();
+  await page.goto("/compute");
+  await expect(
+    page.getByRole("heading", { name: "Buy verifiable compute from independent providers" }),
+  ).toBeVisible();
+  await expect(page.getByText(/COMPUTE MARKET V2 DEPLOYMENT PENDING/i)).toBeVisible();
+  await page.goto("/compute/new");
+  await expect(page.getByRole("button", { name: /Approve USDC & create request/i })).toBeDisabled();
+  await page.goto("/provider-console");
+  await expect(page.getByRole("heading", { name: "Provider console" })).toBeVisible();
   expect(errors).toEqual([]);
 });
 
@@ -30,6 +39,8 @@ test("presents the Pact guide and supplied brand mark", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Choose your path" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Know what to trust" })).toBeVisible();
   await expect(page.getByText("For a job creator")).toBeVisible();
+  await expect(page.getByText("For a compute buyer")).toBeVisible();
+  await expect(page.getByText("For a GPU provider")).toBeVisible();
   await expect(page.getByText("For an agent operator")).toBeVisible();
   await expect(page.getByText("For a Technocore contributor")).toBeVisible();
 

@@ -32,6 +32,24 @@ The current Pact V1 deployment is:
 
 The machine-readable record is in `deployments/base-sepolia.json`.
 
+### Compute V2
+
+`PactComputeMarket` is intentionally not configured in Production until its
+separate deployment is audited and broadcast. The frontend continues to build
+and exposes the compute guide in a fail-closed `deployment pending` state.
+
+Dry-run first; broadcasting requires a separate explicit operator approval:
+
+```bash
+cd contracts
+forge script script/DeployCompute.s.sol:DeployCompute --rpc-url "$BASE_SEPOLIA_RPC_URL"
+forge script script/DeployCompute.s.sol:DeployCompute --rpc-url "$BASE_SEPOLIA_RPC_URL" --broadcast
+```
+
+After receipt and source verification, record `VITE_COMPUTE_MARKET_ADDRESS` and
+`VITE_COMPUTE_DEPLOYMENT_BLOCK`. Confirm `paymentToken()` equals the official
+Base Sepolia Circle test USDC address before enabling browser writes.
+
 ### Re-deployment
 
 Re-check chain ID, RPC and Circle's Base Sepolia USDC address immediately before deployment. Keep `PRIVATE_KEY` outside tracked files.
@@ -47,6 +65,10 @@ Record the receipt, market address and deployment block. Confirm `paymentToken()
 ## Vercel
 
 Connect GitHub repository `FatihX1X/PactMarket`; use `main` for Production and other branches for Preview. Repository-root settings are committed in `vercel.json`. Add only public `VITE_*` values. With no market address the app intentionally enters deployment-pending mode and disables writes.
+
+`VITE_COMPUTE_MARKET_ADDRESS` and `VITE_COMPUTE_DEPLOYMENT_BLOCK` are independent
+from the V1 variables. Never put a private key, API credential or other secret
+in any `VITE_*` value because Vite embeds them in the public browser bundle.
 
 The delivery workflow uses the pinned Vercel CLI version below. `.vercel` and
 tokens are ignored and must remain local:
