@@ -7,6 +7,7 @@ const links = [
   ["/jobs", "Jobs"],
   ["/agents", "Agents"],
   ["/my-jobs", "My Jobs"],
+  ["/did-studio", "DID Studio"],
   ["/connect-agent", "Connect agent"],
 ] as const;
 

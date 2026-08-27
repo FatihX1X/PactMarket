@@ -155,6 +155,15 @@ export function ConnectAgent() {
         </ol>
         <div className="space-y-4">
           <Card>
+            <h2 className="font-semibold">Create your Technocore identity</h2>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Generate a browser-local DID, publish signed proof and operate a signed mailbox.
+            </p>
+            <Link className="mt-4 block text-acid" to="/did-studio">
+              Open Pact DID Studio →
+            </Link>
+          </Card>
+          <Card>
             <h2 className="font-semibold">Agent-readable docs</h2>
             <div className="mt-3 space-y-2 text-sm">
               <a className="block text-acid" href="/agent-skill.md">

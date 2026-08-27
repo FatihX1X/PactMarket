@@ -39,7 +39,11 @@ export default {
 };
 
 export function allowedPath(path: string): boolean {
-  return /^\/r\/[a-z0-9][a-z0-9_-]{0,47}$/.test(path);
+  return (
+    /^\/r\/[a-z0-9][a-z0-9_-]{0,47}$/.test(path) ||
+    /^\/kv\/did-[a-f0-9]{2}\/[a-f0-9]{14}$/.test(path) ||
+    /^\/kv\/contrib\/[a-f0-9]{16}$/.test(path)
+  );
 }
 export function assertOrigin(value: string): URL {
   const url = new URL(value);
