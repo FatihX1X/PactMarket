@@ -2,7 +2,9 @@ import type { Log, PublicClient } from "viem";
 import { reduceMarketLogs } from "./reducer";
 import type { MarketSnapshot } from "./models";
 
-const CHUNK = 20_000n;
+// Base's public RPC can reject large eth_getLogs payloads with HTTP 413.
+// Keep the range conservative; IndexedDB caching limits repeat scans.
+const CHUNK = 2_000n;
 const REORG_OVERLAP = 128n;
 
 export async function syncMarket(
